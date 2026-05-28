@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.pem
+*.key
+packages/
+*.lota/
+.DS_Store
+.vscode/
+.idea/

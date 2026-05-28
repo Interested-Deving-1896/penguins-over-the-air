@@ -1,0 +1,125 @@
+# system.toml — penguins-over-the-air system configuration
+#
+# Debian/Devuan-tuned fork of linux-over-the-air.
+# Inherits all linux-over-the-air defaults and adds:
+#   - Debian-specific bootloader detection (grub-pc, grub-efi, systemd-boot)
+#   - fwupd hooks integrated with penguins-eggs ISO lifecycle
+#   - Waydroid support for Debian hosts
+#   - penguins-eggs channel routing
+
+[system]
+name = ""
+arch = ""
+# Debian family: debian, devuan, ubuntu, linuxmint, mx, antix
+distro = "debian"
+filesystem = "ext4"
+
+[slots]
+layout = "ab"
+
+[slots.a]
+device = ""
+mountpoint = "/"
+filesystem = ""
+
+[slots.b]
+device = ""
+mountpoint = "/mnt/pota-slot-b"
+filesystem = ""
+
+[bootloader]
+# Debian systems typically use grub2 (grub-pc or grub-efi)
+type = "grub2"
+confirm_timeout_secs = 60
+confirm_command = ""
+
+[channels]
+# penguins-over-the-air channels mirror penguins-eggs release cadence
+active = "stable"
+server_url = "https://update.penguins-eggs.net/service/update2"
+
+# LVFS is always enabled on Debian — fwupd is a first-class citizen
+lvfs_enabled = true
+
+[firmware]
+# Debian ships fwupd in main; apply firmware before OS updates by default
+policy = "before_os"
+firmware_required = false
+dbus_service = "org.freedesktop.fwupd"
+
+# ── penguins-eggs integration ─────────────────────────────────────────────────
+[penguins_eggs]
+# Enable penguins-eggs ISO lifecycle hooks
+enabled = true
+
+# penguins-eggs channel: eggs (stable), eggs-dev (development)
+eggs_channel = "eggs"
+
+# Path to penguins-eggs binary
+eggs_bin = "/usr/bin/eggs"
+
+# Trigger ISO rebuild after OS update (for live/installable ISO generation)
+rebuild_iso_on_update = false
+
+# ISO output directory
+iso_output_dir = "/home/eggs"
+
+# ── Debian-specific fwupd hooks ───────────────────────────────────────────────
+[firmware.debian]
+# Run apt-get update before fwupd refresh to ensure LVFS metadata is current
+apt_update_before_fwupd = true
+
+# Debian fwupd plugin allowlist (empty = all plugins enabled)
+# Example: ["uefi-capsule", "nvme", "logitech-hidpp"]
+plugin_allowlist = []
+
+# Honour Debian's unattended-upgrades fwupd integration
+respect_unattended_upgrades = true
+
+# ── Waydroid (Android on Debian) ──────────────────────────────────────────────
+[android]
+enabled = false
+avb_mode = "unlocked"
+avb_key = ""
+avb_algorithm = "SHA256_RSA4096"
+bootctl_transport = "local"
+adb_serial = ""
+bcb_device = ""
+virtual_ab = false
+payload_format = "crau"
+transport = "all"
+
+[android.waydroid]
+enabled = false
+images_dir = "/var/lib/waydroid/images"
+# vanilla = AOSP without GApps (Debian-preferred for privacy)
+channel = "vanilla"
+use_incus = false
+
+[android.halium]
+enabled = false
+distro = "droidian"
+boot_device = ""
+system_device = ""
+vendor_device = ""
+rootfs_device = ""
+
+[dlc]
+enabled = true
+install_dir = "/var/lib/pota/dlc"
+manifest_url = ""
+
+[incus]
+enabled = false
+socket = "/var/lib/incus/unix.socket"
+instance_type = "container"
+base_image = "images:debian/trixie"
+
+[hooks]
+hook_dir = "/etc/pota/hooks.d"
+timeout_secs = 300
+
+[logging]
+level = "info"
+destination = "journal"
+log_file = "/var/log/pota/update.log"

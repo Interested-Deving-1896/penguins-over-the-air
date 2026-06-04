@@ -1,77 +1,75 @@
+[update-readmes]   Mode: rewrite — migrating to template structure...
 # penguins-over-the-air
 
-Debian/Devuan fork of [linux-over-the-air](https://github.com/Interested-Deving-1896/linux-over-the-air).
+[![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/penguins-over-the-air)
 
-Adds Debian-family tuning, fwupd hooks, and [penguins-eggs](https://github.com/pieroproietti/penguins-eggs) ISO lifecycle integration on top of the upstream OTA engine.
+<!-- AI:start:what-it-does -->
+_Description pending._
+<!-- AI:end:what-it-does -->
 
-## What's different from linux-over-the-air
+## Architecture
 
-| Feature | linux-over-the-air | penguins-over-the-air |
-|---|---|---|
-| Default distro | generic | debian |
-| APT pre-flight | — | ✓ broken package check, LVFS refresh |
-| fwupd policy | configurable | before_os (Debian default) |
-| unattended-upgrades | — | ✓ respected |
-| MOK enrollment | — | ✓ `fwupd-debian.sh mok-enroll` |
-| penguins-eggs | — | ✓ post-update ISO rebuild hook |
-| Waydroid channel | configurable | vanilla (default) |
-| Halium distro | configurable | droidian (default) |
+<!-- AI:start:architecture -->
+_Architecture documentation pending._
+<!-- AI:end:architecture -->
 
-## Quick start
+## Install
+
+<!-- Add installation instructions here. This section is yours — the AI will not modify it. -->
 
 ```bash
-# Install
-apt-get install penguins-over-the-air
-
-# Configure
-cp /usr/share/pota/system.toml /etc/pota/system.toml
-$EDITOR /etc/pota/system.toml
-
-# Check for update
-pota update --check-only
-
-# Apply update
-pota update
+git clone https://github.com/Interested-Deving-1896/penguins-over-the-air.git
+cd penguins-over-the-air
 ```
 
-## penguins-eggs integration
+## Usage
 
-```toml
-# /etc/pota/system.toml
-[penguins_eggs]
-enabled = true
-rebuild_iso_on_update = true   # rebuild ISO after each OTA
-iso_output_dir = "/home/eggs"
+<!-- Add usage examples here. This section is yours — the AI will not modify it. -->
+
+## Configuration
+
+<!-- Document configuration options here. This section is yours — the AI will not modify it. -->
+
+## CI
+
+<!-- AI:start:ci -->
+_CI documentation pending._
+<!-- AI:end:ci -->
+
+## Mirror chain
+
+<!-- AI:start:mirror-chain -->
+This repo is maintained in [`Interested-Deving-1896/penguins-over-the-air`](https://github.com/Interested-Deving-1896/penguins-over-the-air) and mirrored through:
+
+```
+Interested-Deving-1896/penguins-over-the-air  ──►  OpenOS-Project-OSP/penguins-over-the-air  ──►  OpenOS-Project-Ecosystem-OOC/penguins-over-the-air
 ```
 
-After a successful OTA update, `eggs produce --nointeractive` runs automatically
-to produce an updated live/installable ISO.
+Changes flow downstream automatically via the hourly mirror chain in
+[`fork-sync-all`](https://github.com/Interested-Deving-1896/fork-sync-all).
+Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-Deving-1896`.
+<!-- AI:end:mirror-chain -->
 
-## fwupd on Debian
+## Contributors
 
-fwupd is enabled by default with `policy = "before_os"`. The Debian-specific
-wrapper respects `/etc/apt/apt.conf.d/50unattended-upgrades` and runs
-`needrestart` after firmware updates.
+<!-- AI:start:contributors -->
+_Contributors pending._
+<!-- AI:end:contributors -->
 
-```bash
-# Check firmware update status
-pota-fwupd status
+## Origins
 
-# Apply firmware updates manually
-pota-fwupd apply-debian
+<!-- AI:start:origins -->
+_Original project — no upstream fork._
+<!-- AI:end:origins -->
 
-# Enroll a new Secure Boot MOK key
-pota-fwupd mok-enroll /path/to/key.pem
-```
+## Resources
 
-## Upstream sync
-
-```bash
-git remote add upstream https://github.com/Interested-Deving-1896/linux-over-the-air
-git fetch upstream
-git merge upstream/main
-```
+<!-- AI:start:resources -->
+_No additional resource files found._
+<!-- AI:end:resources -->
 
 ## License
 
-Apache-2.0
+<!-- AI:start:license -->
+<!-- License not detected — add a LICENSE file to this repo. -->
+<!-- AI:end:license -->
